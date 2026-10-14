@@ -3,17 +3,342 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Admin Dashboard</title>
+    <title>3D Admin Dashboard - Login</title>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    
-    <input type="email" placeholder="enter your email" id="email">
-    <input type="password" placeholder="enter your password" id="password">
-    <button onclick="login()">login</button>
 
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #5B3DF5 0%, #7B5FF9 50%, #E8DEFF 100%);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative floating circles */
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body::before {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            left: -100px;
+        }
+
+        body::after {
+            width: 250px;
+            height: 250px;
+            bottom: -80px;
+            right: -80px;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Credentials Info Box at Top */
+        .credentials-box {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(91, 61, 245, 0.25);
+            border-left: 5px solid #5B3DF5;
+            animation: slideDown 0.6s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .credentials-box h3 {
+            color: #5B3DF5;
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .credentials-box p {
+            color: #333;
+            font-size: 13px;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .credentials-box p span {
+            background: #E8DEFF;
+            color: #5B3DF5;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-family: monospace;
+        }
+
+        .credentials-box i {
+            color: #5B3DF5;
+            width: 16px;
+        }
+
+        /* Main Login Card */
+        .login-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 45px 35px;
+            box-shadow: 
+                0 20px 50px rgba(91, 61, 245, 0.35),
+                0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+            position: relative;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #5B3DF5, #7B5FF9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 25px rgba(91, 61, 245, 0.4);
+        }
+
+        .logo-circle i {
+            font-size: 36px;
+            color: #fff;
+        }
+
+        .login-card h1 {
+            text-align: center;
+            color: #2d2d2d;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .login-card .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #5B3DF5;
+            margin-bottom: 8px;
+        }
+
+        .input-box {
+            position: relative;
+        }
+
+        .input-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #5B3DF5;
+            font-size: 16px;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 14px 16px 14px 45px;
+            border: 2px solid #E8DEFF;
+            border-radius: 12px;
+            font-size: 14px;
+            background: #FAFAFF;
+            color: #333;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-box input:focus {
+            border-color: #5B3DF5;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(91, 61, 245, 0.1);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #5B3DF5, #7B5FF9);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(91, 61, 245, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(91, 61, 245, 0.5);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .error-message {
+            background: #ffe5e5;
+            color: #e53e3e;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 13px;
+            margin-bottom: 15px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-message.show {
+            display: flex;
+        }
+
+        .success-message {
+            background: #e5ffe9;
+            color: #2f855a;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 13px;
+            margin-bottom: 15px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .success-message.show {
+            display: flex;
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 35px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-wrapper">
+
+        <!-- Admin Credentials Display Box -->
+        <div class="credentials-box">
+            <h3><i class="fa-solid fa-key"></i> Demo Admin Credentials</h3>
+            <p><i class="fa-solid fa-envelope"></i> Email: <span>raheem@gmail.com</span></p>
+            <p><i class="fa-solid fa-lock"></i> Password: <span>raheem321</span></p>
+        </div>
+
+        <!-- Login Card -->
+        <div class="login-card">
+            <div class="logo-circle">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <h1>Admin Login</h1>
+            <p class="subtitle">Sign in to access your dashboard</p>
+
+            <div class="error-message" id="errorMsg">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span id="errorText">Invalid credentials</span>
+            </div>
+
+            <div class="success-message" id="successMsg">
+                <i class="fa-solid fa-circle-check"></i>
+                <span>Login successful! Redirecting...</span>
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <div class="input-box">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" placeholder="Enter your email" id="email" value="raheem@gmail.com">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="input-box">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" placeholder="Enter your password" id="password" value="raheem321">
+                    <i class="fa-solid fa-eye toggle-password" onclick="togglePassword()" id="toggleIcon"></i>
+                </div>
+            </div>
+
+            <button class="login-btn" onclick="login()">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                Login to Dashboard
+            </button>
+
+            <p class="footer-text">© 2024 3D Admin Dashboard. All rights reserved.</p>
+        </div>
+    </div>
 
     <!-- Firebase compatibility scripts -->
     <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-app-compat.js"></script>
@@ -32,7 +357,38 @@
             appId: "1:859213786487:web:64e419aa1275e132e40572"
         };
         firebase.initializeApp(firebaseConfig);
-</script>
+
+        // Toggle Password Visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Show error message
+        function showError(message) {
+            const errorMsg = document.getElementById('errorMsg');
+            const errorText = document.getElementById('errorText');
+            errorText.textContent = message;
+            errorMsg.classList.add('show');
+            document.getElementById('successMsg').classList.remove('show');
+            setTimeout(() => errorMsg.classList.remove('show'), 4000);
+        }
+
+        // Show success message
+        function showSuccess() {
+            document.getElementById('successMsg').classList.add('show');
+            document.getElementById('errorMsg').classList.remove('show');
+        }
+    </script>
     <script src="./admin.js"></script>
 </body>
 </html>
